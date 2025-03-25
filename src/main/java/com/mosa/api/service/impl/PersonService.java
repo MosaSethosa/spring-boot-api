@@ -32,16 +32,27 @@ public class PersonService implements IPersonService {
 
     @Override
     public Person createPerson(Person person) {
-        //person.setPhotoUrl(setPersonPhoto(person));
+        person.setPhotoUrl(setPersonPhoto(person));
         return personRepo.save(person);
     }
 
     // helper method
     private String setPersonPhoto(Person person) {
-        String photoNames[] = {"male.png", "female.", "other.png"};
+        String[] photoNames = {"male.png", "female.png", "other.png"};
+        String strImage = "";
+        if(person.getGender() == Gender.MALE) {
+            strImage = "male.png";
+        }
+        else if(person.getGender() == Gender.FEMALE) {
+            strImage = "female.png";
+        }
+        else {
+            strImage = "other.png";
+        }
+
         return ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path("/person/photo/" + photoNames[new Random().nextInt(3)])
+                .path("/person/photo/" + strImage)
                 .toUriString();
     }
 
