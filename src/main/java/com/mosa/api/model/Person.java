@@ -13,7 +13,6 @@ import java.time.Period;
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class Person {
 
@@ -41,6 +40,16 @@ public class Person {
     private String email;
 
     private String photoUrl;
+
+    public Person(Long id, String name, LocalDate dateOfBirth, int age, Gender gender, String email, String photoUrl) {
+        this.id = id;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.age = age;
+        this.gender = gender;
+        this.email = email;
+        this.photoUrl = photoUrl;
+    }
 
     // Setter
     public void setAge(int age) {

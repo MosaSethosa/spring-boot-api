@@ -32,7 +32,7 @@ public class PersonService implements IPersonService {
 
     @Override
     public Person createPerson(Person person) {
-        person.setPhotoUrl(setPersonPhoto(person));
+        //person.setPhotoUrl(setPersonPhoto(person));
         return personRepo.save(person);
     }
 
