@@ -28,7 +28,7 @@ public class ApiApplication {
 					44,
 					Gender.MALE,
 					"John@gmail.com",
-					"..."
+					"http://localhost:8080/person/photo/male.png"
 			));
 		};
 	}

@@ -29,7 +29,7 @@ public class Person {
     private LocalDate dateOfBirth;
 
     @Column(nullable = true)               // actual age to be calculated in the setter
-    private int age;
+    private Integer age;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -51,8 +51,12 @@ public class Person {
         this.photoUrl = photoUrl;
     }
 
-    // Setter
-    public void setAge(int age) {
-        this.age = Period.between(dateOfBirth, LocalDate.now()).getYears();
+    // Always return calculated age if dateOfBirth exists
+    public Integer getAge() {
+        if (dateOfBirth != null) {
+            return Period.between(dateOfBirth, LocalDate.now()).getYears();
+        }
+        return age;
     }
+
 }

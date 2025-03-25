@@ -7,9 +7,13 @@ import com.mosa.api.service.impl.PersonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -70,6 +74,25 @@ public class PersonController {
                         .statusCode(HttpStatus.OK.value())
                         .build()
         );
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Response> updatePerson(@PathVariable("id") Long id,
+                                                 @RequestBody @Valid Person person) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(Map.of("Person updated", personService.updatePerson(id, person)))
+                        .message("Person updated")
+                        .httpStatus(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+    @GetMapping(path = "/photo/{fileName}", produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] getPersonPhoto(@PathVariable("fileName") String fileName) throws IOException {
+        return Files.readAllBytes(Paths.get(System.getProperty("user.home") + "/Downloads/photo/" + fileName));
     }
 
 }
