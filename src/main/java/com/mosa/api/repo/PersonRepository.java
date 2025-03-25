@@ -1,4 +1,4 @@
-package com.mosa.api;
+package com.mosa.api.repo;
 
 import com.mosa.api.model.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
