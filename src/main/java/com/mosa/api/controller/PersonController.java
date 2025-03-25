@@ -72,4 +72,18 @@ public class PersonController {
         );
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Response> updatePerson(@PathVariable("id") Long id,
+                                                 @RequestBody @Valid Person person) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timestamp(LocalDateTime.now())
+                        .data(Map.of("Person updated", personService.updatePerson(id, person)))
+                        .message("Person updated")
+                        .httpStatus(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
 }

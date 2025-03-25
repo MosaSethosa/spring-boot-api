@@ -46,8 +46,21 @@ public class PersonService implements IPersonService {
     }
 
     @Override
-    public Person updatePerson(Person person) {
-        return personRepo.save(person); // TODO :: check logic
+    public Person updatePerson(Long id, Person person) {
+        Person personToUpdate = personRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Person id " + id + " not found"));
+
+        //update variables
+        personToUpdate.setName(person.getName());
+        personToUpdate.setDateOfBirth(person.getDateOfBirth());
+        personToUpdate.setAge(person.getAge());
+        personToUpdate.setGender(person.getGender());
+        personToUpdate.setEmail(person.getEmail());
+        personToUpdate.setPhotoUrl(setPersonPhoto(person));
+
+        personRepo.save(personToUpdate); //finally save to database
+
+        return person;
     }
 
     @Override

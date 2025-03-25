@@ -10,7 +10,7 @@ public interface IPersonService {
     Person getPersonById(Long id);
     Collection<Person> getAllPersons();
     Person createPerson(Person person);
-    Person updatePerson(Person person);
+    Person updatePerson(Long id, Person person);
     Boolean deletePerson(Long id);
 
 }
