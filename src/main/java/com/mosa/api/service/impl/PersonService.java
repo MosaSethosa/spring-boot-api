@@ -9,9 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 @Transactional
@@ -38,7 +36,6 @@ public class PersonService implements IPersonService {
 
     // helper method
     private String setPersonPhoto(Person person) {
-        String[] photoNames = {"male.png", "female.png", "other.png"};
         String strImage = "";
         if(person.getGender() == Gender.MALE) {
             strImage = "male.png";
@@ -62,16 +59,28 @@ public class PersonService implements IPersonService {
                 .orElseThrow(() -> new RuntimeException("Person id " + id + " not found"));
 
         //update variables
-        personToUpdate.setName(person.getName());
-        personToUpdate.setDateOfBirth(person.getDateOfBirth());
-        personToUpdate.setAge(person.getAge());
-        personToUpdate.setGender(person.getGender());
-        personToUpdate.setEmail(person.getEmail());
-        personToUpdate.setPhotoUrl(setPersonPhoto(person));
+        if(!Objects.equals(person.getName(), personToUpdate.getName())) {
+            personToUpdate.setName(person.getName());
+        }
 
-        personRepo.save(personToUpdate); //finally save to database
+        if(!Objects.equals(person.getDateOfBirth(), personToUpdate.getDateOfBirth())) {
+            personToUpdate.setDateOfBirth(person.getDateOfBirth());
+        }
 
-        return person;
+        if(!Objects.equals(person.getGender(), personToUpdate.getGender())) {
+            personToUpdate.setGender(person.getGender());
+            personToUpdate.setPhotoUrl(setPersonPhoto(person));
+        }
+
+        if(!Objects.equals(person.getEmail(), personToUpdate.getEmail())) {
+            Optional<Person> personOptional = Optional.ofNullable(personRepo.findByEmail(person.getEmail()));
+            if(personOptional.isPresent()) {
+                throw new IllegalStateException("Email is taken!!!");
+            }
+            personToUpdate.setEmail(person.getEmail());
+        }
+
+        return personToUpdate;
     }
 
     @Override
